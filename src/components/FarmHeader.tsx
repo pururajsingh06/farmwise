@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
-import { User } from "lucide-react";
+import { User, Wheat } from "lucide-react";
 
 interface FarmHeaderProps {
   showUserMenu?: boolean;
@@ -36,8 +36,12 @@ const FarmHeader = ({ showUserMenu = true }: FarmHeaderProps) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Farm Settings</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/profile" className="w-full">Profile</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="/settings" className="w-full">Farm Settings</Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Link to="/" className="w-full">Log Out</Link>
@@ -50,5 +54,3 @@ const FarmHeader = ({ showUserMenu = true }: FarmHeaderProps) => {
 };
 
 export default FarmHeader;
-
-import { Wheat } from "lucide-react";

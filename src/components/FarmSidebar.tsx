@@ -8,7 +8,8 @@ import {
   Microscope, 
   CalendarDays, 
   Users, 
-  Settings 
+  Settings,
+  UserRound
 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -51,6 +52,7 @@ const FarmSidebar = () => {
     { icon: CalendarDays, label: 'FARMING CALENDAR', translateKey: 'farmingCalendar', href: '/calendar' },
     { icon: Users, label: 'COMMUNITY', translateKey: 'community', href: '/community' },
     { icon: Settings, label: 'SETTINGS', translateKey: 'settings', href: '/settings' },
+    { icon: UserRound, label: 'PROFILE', translateKey: 'profile', href: '/profile' },
   ];
 
   return (
