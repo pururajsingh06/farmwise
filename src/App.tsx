@@ -19,6 +19,7 @@ import CommunityPage from "./pages/CommunityPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import { useIsMobile } from "./hooks/use-mobile";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 const queryClient = new QueryClient();
 
@@ -27,28 +28,30 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/dashboard" element={isMobile ? <MobileDashboardPage /> : <DashboardPage />} />
-            <Route path="/crops" element={<CropsPage />} />
-            <Route path="/crops/:cropId" element={<CropDetailPage />} />
-            <Route path="/weather" element={<WeatherPage />} />
-            <Route path="/soil" element={<SoilHealthPage />} />
-            <Route path="/calendar" element={<FarmingCalendarPage />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/dashboard" element={isMobile ? <MobileDashboardPage /> : <DashboardPage />} />
+              <Route path="/crops" element={<CropsPage />} />
+              <Route path="/crops/:cropId" element={<CropDetailPage />} />
+              <Route path="/weather" element={<WeatherPage />} />
+              <Route path="/soil" element={<SoilHealthPage />} />
+              <Route path="/calendar" element={<FarmingCalendarPage />} />
+              <Route path="/community" element={<CommunityPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              {/* Catch-all route */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </LanguageProvider>
     </QueryClientProvider>
   );
 };

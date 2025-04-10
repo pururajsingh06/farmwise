@@ -9,8 +9,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import FarmHeader from "@/components/FarmHeader";
+import { useLanguage, Language } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
 
 const WelcomePage = () => {
+  const { language, setLanguage, t } = useLanguage();
+  const { toast } = useToast();
+
+  const handleLanguageChange = (newLanguage: Language) => {
+    setLanguage(newLanguage);
+    toast({
+      title: "Language Changed",
+      description: `Language has been updated to ${newLanguage}`,
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <FarmHeader showUserMenu={false} />
@@ -26,9 +39,9 @@ const WelcomePage = () => {
                 </svg>
               </div>
             </div>
-            <h1 className="text-3xl font-bold mb-2">SMART FARM ADVISOR</h1>
+            <h1 className="text-3xl font-bold mb-2">{t('welcome')}</h1>
             <p className="text-gray-600 mb-6">
-              Data-driven farming recommendations for better yields
+              {t('tagline')}
             </p>
           </div>
 
@@ -36,18 +49,18 @@ const WelcomePage = () => {
             <div className="grid grid-cols-2 gap-4">
               <Link to="/login">
                 <Button className="w-full" variant="default">
-                  LOGIN
+                  {t('login')}
                 </Button>
               </Link>
               <Link to="/register">
                 <Button className="w-full" variant="outline">
-                  SIGN UP
+                  {t('signup')}
                 </Button>
               </Link>
             </div>
             <Link to="/dashboard">
               <Button variant="link" className="w-full text-gray-500">
-                Continue as guest to explore
+                {t('continueAsGuest')}
               </Button>
             </Link>
           </div>
@@ -57,18 +70,32 @@ const WelcomePage = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="flex items-center gap-1">
                   <Globe size={16} />
-                  <span>English</span>
+                  <span>{language}</span>
                   <ChevronDown size={14} />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem>English</DropdownMenuItem>
-                <DropdownMenuItem>Español</DropdownMenuItem>
-                <DropdownMenuItem>Français</DropdownMenuItem>
-                <DropdownMenuItem>हिन्दी (Hindi)</DropdownMenuItem>
-                <DropdownMenuItem>ਪੰਜਾਬੀ (Punjabi)</DropdownMenuItem>
-                <DropdownMenuItem>मराठी (Marathi)</DropdownMenuItem>
-                <DropdownMenuItem>తెలుగు (Telugu)</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange('English')}>
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange('Español')}>
+                  Español
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange('Français')}>
+                  Français
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange('हिन्दी')}>
+                  हिन्दी (Hindi)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange('ਪੰਜਾਬੀ')}>
+                  ਪੰਜਾਬੀ (Punjabi)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange('मराठी')}>
+                  मराठी (Marathi)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleLanguageChange('తెలుగు')}>
+                  తెలుగు (Telugu)
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

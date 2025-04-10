@@ -1,21 +1,34 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AlertTriangle, Sun, CloudRain, ArrowRight, Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { CornIcon } from "@/components/CropIcons";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import FarmSidebar from "@/components/FarmSidebar";
 
 const MobileDashboardPage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <header className="bg-white border-b p-4">
         <div className="flex justify-between items-center">
           <div className="text-lg font-bold text-farm-green-dark">SMART FARM ADVISOR</div>
           <div className="flex gap-3">
-            <Button variant="ghost" size="sm">
-              <Menu size={20} />
-            </Button>
-            <Button variant="ghost" size="sm">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="sm">
+                  <Menu size={20} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left" className="p-0">
+                <div className="pt-2">
+                  <FarmSidebar />
+                </div>
+              </SheetContent>
+            </Sheet>
+            <Button variant="ghost" size="sm" onClick={() => navigate("/profile")}>
               <User size={20} />
             </Button>
           </div>

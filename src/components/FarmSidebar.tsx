@@ -10,15 +10,19 @@ import {
   Users, 
   Settings 
 } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface SidebarItemProps {
   icon: React.ElementType;
   label: string;
+  translateKey: string;
   href: string;
   active: boolean;
 }
 
-const SidebarItem = ({ icon: Icon, label, href, active }: SidebarItemProps) => {
+const SidebarItem = ({ icon: Icon, label, translateKey, href, active }: SidebarItemProps) => {
+  const { t } = useLanguage();
+  
   return (
     <Link 
       to={href}
@@ -30,7 +34,7 @@ const SidebarItem = ({ icon: Icon, label, href, active }: SidebarItemProps) => {
       )}
     >
       <Icon size={20} />
-      <span className="font-medium">{label}</span>
+      <span className="font-medium">{t(translateKey)}</span>
     </Link>
   );
 };
@@ -40,13 +44,13 @@ const FarmSidebar = () => {
   const pathname = location.pathname;
   
   const menuItems = [
-    { icon: LayoutDashboard, label: 'DASHBOARD', href: '/dashboard' },
-    { icon: Cloud, label: 'WEATHER', href: '/weather' },
-    { icon: Wheat, label: 'CROP RECOMMENDATIONS', href: '/crops' },
-    { icon: Microscope, label: 'SOIL HEALTH', href: '/soil' },
-    { icon: CalendarDays, label: 'FARMING CALENDAR', href: '/calendar' },
-    { icon: Users, label: 'COMMUNITY', href: '/community' },
-    { icon: Settings, label: 'SETTINGS', href: '/settings' },
+    { icon: LayoutDashboard, label: 'DASHBOARD', translateKey: 'dashboard', href: '/dashboard' },
+    { icon: Cloud, label: 'WEATHER', translateKey: 'weather', href: '/weather' },
+    { icon: Wheat, label: 'CROP RECOMMENDATIONS', translateKey: 'cropRecommendations', href: '/crops' },
+    { icon: Microscope, label: 'SOIL HEALTH', translateKey: 'soilHealth', href: '/soil' },
+    { icon: CalendarDays, label: 'FARMING CALENDAR', translateKey: 'farmingCalendar', href: '/calendar' },
+    { icon: Users, label: 'COMMUNITY', translateKey: 'community', href: '/community' },
+    { icon: Settings, label: 'SETTINGS', translateKey: 'settings', href: '/settings' },
   ];
 
   return (
@@ -56,6 +60,7 @@ const FarmSidebar = () => {
           key={item.href}
           icon={item.icon}
           label={item.label}
+          translateKey={item.translateKey}
           href={item.href}
           active={pathname === item.href}
         />
