@@ -1,27 +1,51 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import WelcomePage from "./pages/WelcomePage";
+import RegisterPage from "./pages/RegisterPage";
+import LoginPage from "./pages/LoginPage";
+import DashboardPage from "./pages/DashboardPage";
+import CropsPage from "./pages/CropsPage";
+import CropDetailPage from "./pages/CropDetailPage";
+import WeatherPage from "./pages/WeatherPage";
+import MobileDashboardPage from "./pages/MobileDashboardPage";
+import { useIsMobile } from "./hooks/use-mobile";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const isMobile = useIsMobile();
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<WelcomePage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/dashboard" element={isMobile ? <MobileDashboardPage /> : <DashboardPage />} />
+            <Route path="/crops" element={<CropsPage />} />
+            <Route path="/crops/:cropId" element={<CropDetailPage />} />
+            <Route path="/weather" element={<WeatherPage />} />
+            {/* These routes would be implemented in future versions */}
+            <Route path="/soil" element={<DashboardPage />} />
+            <Route path="/calendar" element={<DashboardPage />} />
+            <Route path="/community" element={<DashboardPage />} />
+            <Route path="/settings" element={<DashboardPage />} />
+            {/* Catch-all route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

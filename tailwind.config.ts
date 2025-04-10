@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Farm Advisor custom colors
+				farm: {
+					green: {
+						light: '#E3F1DA',
+						DEFAULT: '#5A9D55',
+						dark: '#2F6B2C'
+					},
+					earth: {
+						light: '#F2E3CF',
+						DEFAULT: '#C8A279',
+						dark: '#8B6B43'
+					},
+					sky: {
+						light: '#D3E4FD',
+						DEFAULT: '#6BA6F2',
+						dark: '#2C71CD'
+					},
+					alert: '#F97316'
 				}
 			},
 			borderRadius: {
