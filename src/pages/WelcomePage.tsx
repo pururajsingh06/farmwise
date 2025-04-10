@@ -65,6 +65,10 @@ const WelcomePage = () => {
                 <DropdownMenuItem>English</DropdownMenuItem>
                 <DropdownMenuItem>Español</DropdownMenuItem>
                 <DropdownMenuItem>Français</DropdownMenuItem>
+                <DropdownMenuItem>हिन्दी (Hindi)</DropdownMenuItem>
+                <DropdownMenuItem>ਪੰਜਾਬੀ (Punjabi)</DropdownMenuItem>
+                <DropdownMenuItem>मराठी (Marathi)</DropdownMenuItem>
+                <DropdownMenuItem>తెలుగు (Telugu)</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

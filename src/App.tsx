@@ -15,6 +15,9 @@ import WeatherPage from "./pages/WeatherPage";
 import MobileDashboardPage from "./pages/MobileDashboardPage";
 import SoilHealthPage from "./pages/SoilHealthPage";
 import FarmingCalendarPage from "./pages/FarmingCalendarPage";
+import CommunityPage from "./pages/CommunityPage";
+import SettingsPage from "./pages/SettingsPage";
+import ProfilePage from "./pages/ProfilePage";
 import { useIsMobile } from "./hooks/use-mobile";
 
 const queryClient = new QueryClient();
@@ -38,8 +41,9 @@ const App = () => {
             <Route path="/weather" element={<WeatherPage />} />
             <Route path="/soil" element={<SoilHealthPage />} />
             <Route path="/calendar" element={<FarmingCalendarPage />} />
-            <Route path="/community" element={<DashboardPage />} />
-            <Route path="/settings" element={<DashboardPage />} />
+            <Route path="/community" element={<CommunityPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
