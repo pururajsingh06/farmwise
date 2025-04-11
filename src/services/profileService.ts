@@ -36,13 +36,34 @@ export const getFarmProfile = async (userId: string) => {
 };
 
 export const updateFarmProfile = async (profile: Partial<FarmProfile>) => {
-  const { data, error } = await supabase
+  // Check if profile exists first
+  const { data: existingProfile } = await supabase
     .from('farm_profiles')
-    .update(profile)
+    .select('id')
     .eq('user_id', profile.user_id!)
-    .select()
-    .single();
+    .maybeSingle();
   
-  if (error) throw error;
-  return data as FarmProfile;
+  // If profile exists, update it
+  if (existingProfile) {
+    const { data, error } = await supabase
+      .from('farm_profiles')
+      .update(profile)
+      .eq('user_id', profile.user_id!)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data as FarmProfile;
+  } 
+  // If profile doesn't exist, create it
+  else {
+    return createFarmProfile({
+      user_id: profile.user_id!,
+      farm_location: profile.farm_location || '',
+      land_area: profile.land_area || 0,
+      area_unit: profile.area_unit || 'acres',
+      soil_type: profile.soil_type || 'loamy',
+      crops: profile.crops || []
+    });
+  }
 };

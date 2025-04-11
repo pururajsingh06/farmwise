@@ -1,17 +1,37 @@
 
+import { useState, useEffect } from "react";
 import FarmLayout from "@/components/FarmLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AlertTriangle, Sun, CloudRain } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { getFarmProfile, FarmProfile } from "@/services/profileService";
 
 const DashboardPage = () => {
-  const farmData = {
-    location: "Greenfield County",
-    landArea: "25",
-    areaUnit: "acres",
-    soilType: "Loamy"
-  };
+  const { user } = useAuth();
+  const [farmData, setFarmData] = useState<FarmProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadFarmProfile = async () => {
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+      
+      try {
+        const profile = await getFarmProfile(user.id);
+        setFarmData(profile);
+      } catch (error) {
+        console.error("Error loading farm profile:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadFarmProfile();
+  }, [user]);
 
   return (
     <FarmLayout>
@@ -71,20 +91,31 @@ const DashboardPage = () => {
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-3">YOUR FARM SUMMARY:</h2>
         <div className="bg-white p-4 rounded-lg border">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-muted-foreground text-sm">Location</p>
-              <p className="font-medium">{farmData.location}</p>
+          {isLoading ? (
+            <p>Loading farm data...</p>
+          ) : !farmData ? (
+            <div className="text-center py-4">
+              <p className="mb-2">No farm profile found.</p>
+              <Link to="/profile">
+                <Button variant="outline">Create your farm profile</Button>
+              </Link>
             </div>
-            <div>
-              <p className="text-muted-foreground text-sm">Land area</p>
-              <p className="font-medium">{farmData.landArea} {farmData.areaUnit}</p>
+          ) : (
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-muted-foreground text-sm">Location</p>
+                <p className="font-medium">{farmData.farm_location}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground text-sm">Land area</p>
+                <p className="font-medium">{farmData.land_area} {farmData.area_unit}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground text-sm">Soil type</p>
+                <p className="font-medium">{farmData.soil_type}</p>
+              </div>
             </div>
-            <div>
-              <p className="text-muted-foreground text-sm">Soil type</p>
-              <p className="font-medium">{farmData.soilType}</p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
 

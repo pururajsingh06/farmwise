@@ -18,13 +18,16 @@ const ProfilePage = () => {
   const [farmLocation, setFarmLocation] = useState("");
   const [landArea, setLandArea] = useState("");
   const [areaUnit, setAreaUnit] = useState("acres");
-  const [soilType, setSoilType] = useState("");
+  const [soilType, setSoilType] = useState("loamy");
   const [crops, setCrops] = useState<string[]>([]);
   const [profile, setProfile] = useState<FarmProfile | null>(null);
 
   useEffect(() => {
     const loadProfile = async () => {
-      if (!user) return;
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
       
       try {
         const profileData = await getFarmProfile(user.id);
@@ -53,10 +56,10 @@ const ProfilePage = () => {
   const handleUpdateProfile = async () => {
     if (!user) return;
     
-    if (!farmLocation || !landArea || !soilType) {
+    if (!farmLocation) {
       toast({
         title: "Error",
-        description: "Please fill in all required fields",
+        description: "Please provide a farm location",
         variant: "destructive",
       });
       return;
@@ -64,18 +67,23 @@ const ProfilePage = () => {
 
     setIsUpdating(true);
     try {
-      await updateFarmProfile({
+      // We'll now use our improved updateFarmProfile function that handles both create and update
+      const updatedProfile = await updateFarmProfile({
         user_id: user.id,
         farm_location: farmLocation,
-        land_area: Number(landArea),
+        land_area: Number(landArea) || 0,
         area_unit: areaUnit,
         soil_type: soilType,
         crops: crops.length > 0 ? crops : undefined
       });
       
+      setProfile(updatedProfile);
+      
       toast({
-        title: "Profile Updated",
-        description: "Your farm profile has been updated successfully!",
+        title: profile ? "Profile Updated" : "Profile Created",
+        description: profile 
+          ? "Your farm profile has been updated successfully!" 
+          : "Your farm profile has been created successfully!",
       });
     } catch (error: any) {
       toast({
