@@ -31,7 +31,7 @@ export const getFarmProfile = async (userId: string) => {
     .maybeSingle();
   
   if (error) throw error;
-  return data;
+  return data as FarmProfile | null;
 };
 
 export const updateFarmProfile = async (profile: Partial<FarmProfile>) => {
@@ -43,5 +43,5 @@ export const updateFarmProfile = async (profile: Partial<FarmProfile>) => {
     .single();
   
   if (error) throw error;
-  return data;
+  return data as FarmProfile;
 };

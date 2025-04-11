@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { getFarmProfile, updateFarmProfile } from "@/services/profileService";
+import { getFarmProfile, updateFarmProfile, FarmProfile } from "@/services/profileService";
 import { useToast } from "@/hooks/use-toast";
 import FarmLayout from "@/components/FarmLayout";
 import { Button } from "@/components/ui/button";
@@ -20,19 +20,21 @@ const ProfilePage = () => {
   const [areaUnit, setAreaUnit] = useState("acres");
   const [soilType, setSoilType] = useState("");
   const [crops, setCrops] = useState<string[]>([]);
+  const [profile, setProfile] = useState<FarmProfile | null>(null);
 
   useEffect(() => {
     const loadProfile = async () => {
       if (!user) return;
       
       try {
-        const profile = await getFarmProfile(user.id);
-        if (profile) {
-          setFarmLocation(profile.farm_location);
-          setLandArea(profile.land_area.toString());
-          setAreaUnit(profile.area_unit);
-          setSoilType(profile.soil_type);
-          setCrops(profile.crops || []);
+        const profileData = await getFarmProfile(user.id);
+        if (profileData) {
+          setProfile(profileData);
+          setFarmLocation(profileData.farm_location);
+          setLandArea(profileData.land_area.toString());
+          setAreaUnit(profileData.area_unit);
+          setSoilType(profileData.soil_type);
+          setCrops(profileData.crops || []);
         }
       } catch (error: any) {
         toast({
