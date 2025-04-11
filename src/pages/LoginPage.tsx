@@ -6,14 +6,17 @@ import FarmHeader from "@/components/FarmHeader";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { signIn, isAuthenticated } = useAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       toast({
@@ -24,15 +27,21 @@ const LoginPage = () => {
       return;
     }
 
-    // In a real app, we would authenticate against a backend
-    toast({
-      title: "Login Successful",
-      description: "Welcome back to Smart Farm Advisor!",
-    });
-    
-    // Navigate to the dashboard
-    setTimeout(() => navigate("/dashboard"), 1500);
+    setIsLoading(true);
+    try {
+      await signIn(email, password);
+    } catch (error) {
+      // Error is already handled in the auth context
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  // If already authenticated, redirect to dashboard
+  if (isAuthenticated) {
+    navigate('/dashboard');
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -77,8 +86,8 @@ const LoginPage = () => {
               />
             </div>
 
-            <Button type="submit" className="w-full">
-              LOGIN
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "LOGGING IN..." : "LOGIN"}
             </Button>
 
             <div className="text-center">

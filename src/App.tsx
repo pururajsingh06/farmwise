@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import WelcomePage from "./pages/WelcomePage";
 import RegisterPage from "./pages/RegisterPage";
@@ -20,6 +20,8 @@ import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import { useIsMobile } from "./hooks/use-mobile";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -28,30 +30,36 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<WelcomePage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/dashboard" element={isMobile ? <MobileDashboardPage /> : <DashboardPage />} />
-              <Route path="/crops" element={<CropsPage />} />
-              <Route path="/crops/:cropId" element={<CropDetailPage />} />
-              <Route path="/weather" element={<WeatherPage />} />
-              <Route path="/soil" element={<SoilHealthPage />} />
-              <Route path="/calendar" element={<FarmingCalendarPage />} />
-              <Route path="/community" element={<CommunityPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              {/* Catch-all route */}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </LanguageProvider>
+      <BrowserRouter>
+        <AuthProvider>
+          <LanguageProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <Routes>
+                <Route path="/" element={<WelcomePage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                    {isMobile ? <MobileDashboardPage /> : <DashboardPage />}
+                  </ProtectedRoute>
+                } />
+                <Route path="/crops" element={<ProtectedRoute><CropsPage /></ProtectedRoute>} />
+                <Route path="/crops/:cropId" element={<ProtectedRoute><CropDetailPage /></ProtectedRoute>} />
+                <Route path="/weather" element={<ProtectedRoute><WeatherPage /></ProtectedRoute>} />
+                <Route path="/soil" element={<ProtectedRoute><SoilHealthPage /></ProtectedRoute>} />
+                <Route path="/calendar" element={<ProtectedRoute><FarmingCalendarPage /></ProtectedRoute>} />
+                <Route path="/community" element={<ProtectedRoute><CommunityPage /></ProtectedRoute>} />
+                <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+                <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                {/* Catch-all route */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </TooltipProvider>
+          </LanguageProvider>
+        </AuthProvider>
+      </BrowserRouter>
     </QueryClientProvider>
   );
 };

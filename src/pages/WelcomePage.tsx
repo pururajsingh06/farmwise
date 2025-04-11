@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Globe, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
@@ -11,10 +11,21 @@ import {
 import FarmHeader from "@/components/FarmHeader";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect } from "react";
 
 const WelcomePage = () => {
   const { language, setLanguage, t } = useLanguage();
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect to dashboard if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleLanguageChange = (newLanguage: Language) => {
     setLanguage(newLanguage);
