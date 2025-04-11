@@ -22,11 +22,30 @@ import { useIsMobile } from "./hooks/use-mobile";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { useState, useEffect } from "react";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  const isMobile = useIsMobile();
+  // Use a state to track if we're in a browser environment
+  const [isBrowser, setIsBrowser] = useState(false);
+  // Initialize isMobile only after component mount
+  const [isMobileView, setIsMobileView] = useState(false);
+  
+  useEffect(() => {
+    setIsBrowser(true);
+    // Now that we're on the client, we can safely determine if we're on mobile
+    const isMobile = window.innerWidth < 768;
+    setIsMobileView(isMobile);
+    
+    // Set up a listener for resize events
+    const handleResize = () => {
+      setIsMobileView(window.innerWidth < 768);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -42,7 +61,7 @@ const App = () => {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/dashboard" element={
                   <ProtectedRoute>
-                    {isMobile ? <MobileDashboardPage /> : <DashboardPage />}
+                    {isBrowser && (isMobileView ? <MobileDashboardPage /> : <DashboardPage />)}
                   </ProtectedRoute>
                 } />
                 <Route path="/crops" element={<ProtectedRoute><CropsPage /></ProtectedRoute>} />

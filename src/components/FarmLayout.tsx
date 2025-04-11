@@ -1,7 +1,7 @@
 
+import { useState, useEffect } from "react";
 import FarmHeader from "./FarmHeader";
 import FarmSidebar from "./FarmSidebar";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { 
   Sheet, 
   SheetContent, 
@@ -15,7 +15,15 @@ interface FarmLayoutProps {
 }
 
 const FarmLayout = ({ children }: FarmLayoutProps) => {
-  const isMobile = useIsMobile();
+  const [isMobile, setIsMobile] = useState(false);
+  
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div className="flex flex-col h-screen">
