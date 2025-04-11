@@ -60,13 +60,13 @@ const App = () => {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/dashboard" element={
-                  <ProtectedRoute>
+                  <ProtectedRoute allowGuest={true}>
                     {isBrowser && (isMobileView ? <MobileDashboardPage /> : <DashboardPage />)}
                   </ProtectedRoute>
                 } />
-                <Route path="/crops" element={<ProtectedRoute><CropsPage /></ProtectedRoute>} />
-                <Route path="/crops/:cropId" element={<ProtectedRoute><CropDetailPage /></ProtectedRoute>} />
-                <Route path="/weather" element={<ProtectedRoute><WeatherPage /></ProtectedRoute>} />
+                <Route path="/crops" element={<ProtectedRoute allowGuest={true}><CropsPage /></ProtectedRoute>} />
+                <Route path="/crops/:cropId" element={<ProtectedRoute allowGuest={true}><CropDetailPage /></ProtectedRoute>} />
+                <Route path="/weather" element={<ProtectedRoute allowGuest={true}><WeatherPage /></ProtectedRoute>} />
                 <Route path="/soil" element={<ProtectedRoute><SoilHealthPage /></ProtectedRoute>} />
                 <Route path="/calendar" element={<ProtectedRoute><FarmingCalendarPage /></ProtectedRoute>} />
                 <Route path="/community" element={<ProtectedRoute><CommunityPage /></ProtectedRoute>} />

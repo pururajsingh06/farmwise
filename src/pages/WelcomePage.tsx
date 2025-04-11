@@ -35,6 +35,15 @@ const WelcomePage = () => {
     });
   };
 
+  const handleGuestAccess = () => {
+    // Navigate to a simplified dashboard view that doesn't require authentication
+    navigate("/dashboard");
+    toast({
+      title: "Guest Access",
+      description: "You're browsing as a guest. Some features will be limited.",
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <FarmHeader showUserMenu={false} />
@@ -69,11 +78,9 @@ const WelcomePage = () => {
                 </Button>
               </Link>
             </div>
-            <Link to="/dashboard">
-              <Button variant="link" className="w-full text-gray-500">
-                {t('continueAsGuest')}
-              </Button>
-            </Link>
+            <Button variant="link" className="w-full text-gray-500" onClick={handleGuestAccess}>
+              {t('continueAsGuest')}
+            </Button>
           </div>
 
           <div className="pt-4">

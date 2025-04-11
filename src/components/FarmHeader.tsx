@@ -18,7 +18,7 @@ interface FarmHeaderProps {
 }
 
 const FarmHeader = ({ showUserMenu = true }: FarmHeaderProps) => {
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAuthenticated } = useAuth();
   const { t } = useLanguage();
 
   return (
@@ -31,28 +31,39 @@ const FarmHeader = ({ showUserMenu = true }: FarmHeaderProps) => {
       </Link>
       
       {showUserMenu && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center gap-2">
-              <User size={20} />
-              <span>{user?.email?.split('@')[0] || 'User'}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link to="/profile" className="w-full">{t('profile')}</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to="/settings" className="w-full">{t('settings')}</Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut()}>
-              <span className="w-full">{t('logout')}</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        isAuthenticated ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="flex items-center gap-2">
+                <User size={20} />
+                <span>{user?.email?.split('@')[0] || 'User'}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Link to="/profile" className="w-full">{t('profile')}</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link to="/settings" className="w-full">{t('settings')}</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => signOut()}>
+                <span className="w-full">{t('logout')}</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <div className="flex gap-2">
+            <Link to="/login">
+              <Button variant="outline" size="sm">{t('login')}</Button>
+            </Link>
+            <Link to="/register">
+              <Button size="sm">{t('signup')}</Button>
+            </Link>
+          </div>
+        )
       )}
     </header>
   );

@@ -1,5 +1,6 @@
 
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
 export interface FarmProfile {
   id?: string;
@@ -20,7 +21,7 @@ export const createFarmProfile = async (profile: FarmProfile) => {
     .single();
   
   if (error) throw error;
-  return data;
+  return data as FarmProfile;
 };
 
 export const getFarmProfile = async (userId: string) => {
